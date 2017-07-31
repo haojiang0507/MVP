@@ -1,0 +1,37 @@
+
+MVC: Model View Controller
+        Model和View会互相引用
+
+
+MVP: Model View Presenter  （ 相对于MVC来说，规范比较明确；在架构扩展上面更加灵活；解耦 ）
+
+        Model：业务逻辑
+        View：视图
+        Presenter：中间者（ 绑定Model和View ）
+
+    model和view不会直接通信，presenter充当中间人的角色
+
+        view ---> presenter
+             <---    |
+                     |
+                     V
+                   model
+
+    View持有Presenter
+    Presenter持有Model的接口类型( 一定要是接口类型，不然无法做到策略的切换 )
+    Presenter也持有View的接口类型
+
+OCP开闭原则：对扩展开放；对修改关闭
+
+    想更换View／Model时,只需更换相对应的View／Model,其他部分不需要修改
+
+创建中间者代码可以再抽取
+    抽取成模版方法--确定算法的骨架
+
+**内存泄漏问题
+
+        View        --->        Presenter        ---->       Model
+          ^                                                    |
+          |                     onComplete                     |
+          |----------------------------------------------------|
+        被回收                  访问View的引用                 耗时操作
